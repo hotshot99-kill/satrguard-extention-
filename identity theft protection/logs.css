@@ -1,0 +1,57 @@
+:root{
+  --bg:#0f1115;--card:#151821;--muted:#9aa4b2;--text:#e6e9ef;
+  --accent:#3aa675;--accent-weak:#1f6f4d;--warn:#b22e2e;--border:#232738;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--text);
+  font:13px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu;
+}
+.hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 14px;border-bottom:1px solid var(--border);
+}
+.hdr-left{display:flex;align-items:center;gap:10px}
+.hdr h1{margin:0;font-size:16px}
+.muted{color:var(--muted)}
+.hdr-right .btn{margin-left:8px}
+.wrap{padding:12px;display:grid;gap:12px}
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:12px;padding:12px;
+}
+.card-title{margin-bottom:8px;font-weight:600}
+.filters .frow{display:flex;gap:8px;flex-wrap:wrap}
+.filters input, .filters select{
+  background:#0f1219;border:1px solid var(--border);color:var(--text);
+  border-radius:8px;padding:6px 8px;min-height:32px
+}
+.btn{
+  background:var(--accent);border:0;color:#fff;padding:7px 10px;border-radius:8px;cursor:pointer
+}
+.btn:hover{background:#2d8c62}
+.btn.ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn.ghost:hover{border-color:#2c3145}
+.btn.danger{background:var(--warn)}
+.grid-2{display:grid;grid-template-columns:1fr;gap:12px}
+@media (min-width:900px){.grid-2{grid-template-columns:1fr 1fr}}
+
+.table-head{
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:8px
+}
+.pager{display:flex;align-items:center;gap:8px}
+.table-wrap{max-height:420px;overflow:auto;border:1px solid var(--border);border-radius:10px}
+.tbl{width:100%;border-collapse:collapse}
+.tbl th,.tbl td{padding:6px 8px;text-align:left;border-bottom:1px solid var(--border)}
+.tbl thead th{position:sticky;top:0;background:#171a23;z-index:1}
+.level-pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px}
+.level-high{background:#9b1c1c;color:#fff}
+.level-mod{background:#a67600;color:#fff}
+.level-low{background:#0d7a2b;color:#fff}
+
+.ftr{
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;color:var(--muted)
+}

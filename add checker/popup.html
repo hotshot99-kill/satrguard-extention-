@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Ad Blocker</title>
+    <style>
+        body { width: 200px; text-align: center; font-family: Arial, sans-serif; }
+        h2 { color: green; }
+        button { padding: 10px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>Ultimate Ad Blocker</h2>
+    <p>All Ads & Trackers Blocked!</p>
+    <button id="reload">Refresh Page</button>
+    <script>
+        document.getElementById("reload").addEventListener("click", () => {
+            chrome.tabs.reload();
+        });
+    </script>
+</body>
+</html>

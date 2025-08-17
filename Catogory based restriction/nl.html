@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Privacy Guardian - Popup</title>
+  <style>
+    :root {
+      --bg: #0f1724;
+      --card: #0b1220;
+      --accent: #6d28d9;
+      --muted: #9ca3af;
+      --text: #e6eef8;
+    }
+    body {
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      margin: 0;
+      padding: 14px;
+      width: 420px;
+      background: linear-gradient(180deg, #f4f7fb, #e8eefb);
+      color: #0b1220;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: 0 6px 18px rgba(12, 16, 24, 0.08);
+      margin-bottom: 12px;
+    }
+    h1 { margin: 0 0 8px 0; font-size: 18px; }
+    .row { display:flex; align-items:center; justify-content:space-between; margin:8px 0; }
+    .label { display:flex; gap:10px; align-items:center; }
+    .small { color: var(--muted); font-size: 12px; }
+    .toggle { width: 52px; height:28px; border-radius:14px; background:#e5e7eb; position:relative; cursor:pointer; }
+    .toggle.active { background: linear-gradient(90deg,#4f46e5,#06b6d4); }
+    .toggle .knob { position:absolute; top:3px; left:3px; width:22px; height:22px; background:white; border-radius:50%; transition: transform .18s; }
+    .toggle.active .knob { transform: translateX(24px); }
+    input[type="time"], select, input[type="password"] {
+      width:100%;
+      padding:8px 10px;
+      border-radius:8px;
+      border:1px solid #d1d5db;
+      box-sizing:border-box;
+    }
+    button.primary {
+      background: linear-gradient(90deg,#4f46e5,#06b6d4);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button.ghost {
+      background: transparent;
+      border: 1px solid #d1d5db;
+      color: #0b1220;
+      padding:10px 14px;
+      border-radius: 8px;
+      cursor:pointer;
+    }
+    .grid { display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    .section-title { font-weight:600; margin-bottom:6px; }
+    label.checkbox { display:flex; align-items:center; gap:10px; cursor:pointer; }
+    label.checkbox input { transform: scale(1.2); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Privacy Guardian</h1>
+    <div class="small">Manage category blocks & schedules</div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Content Categories</div>
+
+    <label class="checkbox"><input id="adultContent" type="checkbox"> Adult Content</label>
+    <label class="checkbox"><input id="violentContent" type="checkbox"> Violence & Gore</label>
+    <label class="checkbox"><input id="gambling" type="checkbox"> Gambling</label>
+    <label class="checkbox"><input id="datingSites" type="checkbox"> Dating Sites</label>
+    <label class="checkbox"><input id="socialMedia" type="checkbox"> Social Media</label>
+    <label class="checkbox"><input id="politicalMisinformation" type="checkbox"> Political Misinformation</label>
+    <label class="checkbox"><input id="jobScams" type="checkbox"> Job Scams</label>
+
+    <div style="display:flex; gap:10px; margin-top:12px;">
+      <button id="saveButton" class="primary">Save</button>
+      <button id="resetButton" class="ghost">Reset</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Profile & Schedule</div>
+    <div style="margin-bottom:8px;">
+      <label for="profileSelect">Profile</label>
+      <select id="profileSelect">
+        <option value="">Custom</option>
+        <option value="child">Child</option>
+        <option value="work">Work</option>
+        <option value="full">Full Protection</option>
+      </select>
+    </div>
+
+    <div class="grid">
+      <div>
+        <label>Start Time</label>
+        <input id="scheduleStart" type="time" />
+      </div>
+      <div>
+        <label>End Time</label>
+        <input id="scheduleEnd" type="time" />
+      </div>
+    </div>
+
+    <div style="margin-top:8px;">
+      <label>Days (hold ctrl/cmd to multi-select)</label>
+      <select id="scheduleDays" multiple size="3" style="width:100%; padding:8px; border-radius:6px;">
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+        <option value="Saturday">Saturday</option>
+        <option value="Sunday">Sunday</option>
+      </select>
+    </div>
+
+    <div style="display:flex; gap:8px; margin-top:10px;">
+      <button id="applyScheduleBtn" class="primary">Apply Schedule</button>
+      <button id="setPinBtn" class="ghost">Set PIN</button>
+      <input id="setPin" type="password" placeholder="PIN (min 4)" style="flex:1; padding:8px; border-radius:6px; border:1px solid #d1d5db;">
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

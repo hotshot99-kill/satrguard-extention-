@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SecureGuard - Threat Detected</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .alert-container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 600px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      animation: slideUp 0.5s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .warning-icon {
+      font-size: 80px;
+      margin-bottom: 20px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .url-display {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 16px;
+      border-radius: 12px;
+      margin: 20px 0;
+      font-family: monospace;
+      font-size: 18px;
+      word-break: break-all;
+    }
+
+    .threat-list {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px 0;
+      text-align: left;
+    }
+
+    .threat-list h3 {
+      font-size: 20px;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+
+    .threat-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+    }
+
+    .threat-icon {
+      font-size: 16px;
+      margin-right: 12px;
+    }
+
+    .threat-text {
+      font-size: 14px;
+      flex: 1;
+    }
+
+    .actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: rgba(255, 255, 255, 0.9);
+      color: #333;
+    }
+
+    .btn-primary:hover {
+      background: white;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .btn-danger {
+      background: #d32f2f;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #b71c1c;
+      transform: translateY(-2px);
+    }
+
+    .info-section {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 12px;
+      margin: 20px 0;
+      text-align: left;
+    }
+
+    .info-section h4 {
+      font-size: 18px;
+      margin-bottom: 12px;
+      color: #ffd700;
+    }
+
+    .info-section p {
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .countdown {
+      font-size: 14px;
+      margin-top: 20px;
+      opacity: 0.8;
+    }
+
+    @media (max-width: 768px) {
+      .alert-container {
+        padding: 30px 20px;
+        margin: 20px;
+      }
+      
+      h1 {
+        font-size: 24px;
+      }
+      
+      .url-display {
+        font-size: 14px;
+      }
+      
+      .actions {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .btn {
+        width: 100%;
+        max-width: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="alert-container">
+    <div class="warning-icon">⚠️</div>
+    <h1>Threat Detected</h1>
+    <p>SecureGuard has detected potential security threats on this website:</p>
+    
+    <div class="url-display" id="threatUrl">
+      Loading...
+    </div>
+
+    <div class="threat-list" id="threatList">
+      <h3>🚨 Detected Threats:</h3>
+      <div id="threatItems">
+        <!-- Threat items will be populated by JavaScript -->
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h4>🛡️ What does this mean?</h4>
+      <p>This website has been flagged by our security systems because:</p>
+      <ul id="riskExplanation">
+        <li>It matches patterns of known malicious websites</li>
+        <li>It has been reported by security databases</li>
+        <li>It shows suspicious behavior patterns</li>
+      </ul>
+    </div>
+
+    <div class="info-section">
+      <h4>🔒 Recommended Actions:</h4>
+      <p><strong>For your safety, we recommend:</strong></p>
+      <ul>
+        <li>Close this tab and avoid entering personal information</li>
+        <li>Run a security scan on your device</li>
+        <li>Report this as a false positive if you believe it's safe</li>
+        <li>Contact the website owner through official channels</li>
+      </ul>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="goBackBtn">
+        🔙 Go Back to Safety
+      </button>
+      <button class="btn btn-secondary" id="reportFalsePositive">
+        📝 Report False Positive
+      </button>
+      <button class="btn btn-danger" id="proceedAnyway">
+        ⚠️ Proceed Anyway (Not Recommended)
+      </button>
+    </div>
+
+    <div class="countdown" id="countdown">
+      This page will automatically redirect you back in <span id="countdownTimer">30</span> seconds
+    </div>
+  </div>
+
+  <script>
+    class ThreatAlertPage {
+      constructor() {
+        this.countdownTime = 30;
+        this.countdownInterval = null;
+        this.init();
+      }
+
+      init() {
+        this.loadThreatData();
+        this.setupEventListeners();
+        this.startCountdown();
+      }
+
+      loadThreatData() {
+        // Get threat data from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const threatUrl = urlParams.get('url') || 'Unknown URL';
+        const threats = urlParams.get('threats') || 'Generic security threat';
+        
+        // Display the threatened URL
+        document.getElementById('threatUrl').textContent = threatUrl;
+        
+        // Parse and display threats
+        const threatArray = threats.split(',');
+        this.displayThreats(threatArray);
+      }
+
+      displayThreats(threats) {
+        const threatItems = document.getElementById('threatItems');
+        threatItems.innerHTML = '';
+        
+        const threatIcons = {
+          'MALWARE': '🦠',
+          'SOCIAL_ENGINEERING': '🎭',
+          'UNWANTED_SOFTWARE': '📦',
+          'POTENTIALLY_HARMFUL_APPLICATION': '⚡',
+          'phishing': '🎣',
+          'suspicious domain': '🌐',
+          'malicious script': '📜',
+          'dangerous download': '📥'
+        };
+
+        threats.forEach(threat => {
+          const icon = this.getThreatIcon(threat, threatIcons);
+          const threatItem = document.createElement('div');
+          threatItem.className = 'threat-item';
+          threatItem.innerHTML = `
+            <span class="threat-icon">${icon}</span>
+            <span class="threat-text">${threat}</span>
+          `;
+          threatItems.appendChild(threatItem);
+        });
+      }
+
+      getThreatIcon(threat, iconMap) {
+        const lowerThreat = threat.toLowerCase();
+        for (const [key, icon] of Object.entries(iconMap)) {
+          if (lowerThreat.includes(key.toLowerCase())) {
+            return icon;
+          }
+        }
+        return '🚨'; // Default icon
+      }
+
+      setupEventListeners() {
+        // Go back button
+        document.getElementById('goBackBtn').addEventListener('click', () => {
+          this.goBack();
+        });
+
+        // Report false positive
+        document.getElementById('reportFalsePositive').addEventListener('click', () => {
+          this.reportFalsePositive();
+        });
+
+        // Proceed anyway
+        document.getElementById('proceedAnyway').addEventListener('click', () => {
+          this.proceedAnyway();
+        });
+
+        // Handle browser back button
+        window.addEventListener('popstate', () => {
+          this.goBack();
+        });
+
+        // Prevent accidental navigation
+        window.addEventListener('beforeunload', (e) => {
+          e.preventDefault();
+          e.returnValue = '';
+        });
+      }
+
+      startCountdown() {
+        this.countdownInterval = setInterval(() => {
+          this.countdownTime--;
+          document.getElementById('countdownTimer').textContent = this.countdownTime;
+          
+          if (this.countdownTime <= 0) {
+            this.goBack();
+          }
+        }, 1000);
+      }
+
+      stopCountdown() {
+        if (this.countdownInterval) {
+          clearInterval(this.countdownInterval);
+        }
+      }
+
+      goBack() {
+        this.stopCountdown();
+        
+        // Try multiple methods to go back safely
+        if (history.length > 1) {
+          history.back();
+        } else {
+          // If no history, go to a safe page
+          window.location.href = 'about:blank';
+        }
+      }
+
+      reportFalsePositive() {
+        this.stopCountdown();
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const threatUrl = urlParams.get('url');
+        
+        if (chrome && chrome.runtime) {
+          chrome.runtime.sendMessage({
+            type: 'REPORT_FALSE_POSITIVE',
+            data: {
+              url: threatUrl,
+              userAgent: navigator.userAgent,
+              timestamp: Date.now(),
+              source: 'threat_page'
+            }
+          });
+        }
+        
+        // Show confirmation
+        const confirmation = document.createElement('div');
+        confirmation.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: #4CAF50;
+          color: white;
+          padding: 16px 24px;
+          border-radius: 8px;
+          font-size: 14px;
+          font-weight: 600;
+          z-index: 1000;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+          animation: slideIn 0.3s ease-out;
+        `;
+        confirmation.textContent = '✓ False positive reported. Thank you!';
+        document.body.appendChild(confirmation);
+        
+        setTimeout(() => {
+          confirmation.remove();
+          this.goBack();
+        }, 3000);
+      }
+
+      proceedAnyway() {
+        this.stopCountdown();
+        
+        // Show additional warning
+        const proceed = confirm(`
+⚠️ FINAL WARNING ⚠️
+
+You are about to visit a potentially dangerous website that could:
+• Steal your personal information
+• Install malware on your device
+• Compromise your accounts
+• Damage your files
+
+Are you absolutely sure you want to continue?
+        `);
+        
+        if (proceed) {
+          const urlParams = new URLSearchParams(window.location.search);
+          const threatUrl = urlParams.get('url');
+          
+          if (threatUrl) {
+            // Log the user's decision to proceed
+            if (chrome && chrome.runtime) {
+              chrome.runtime.sendMessage({
+                type: 'USER_PROCEEDED_TO_THREAT',
+                data: {
+                  url: threatUrl,
+                  timestamp: Date.now()
+                }
+              });
+            }
+            
+            // Remove the beforeunload listener and proceed
+            window.removeEventListener('beforeunload', this.beforeUnloadHandler);
+            window.location.href = threatUrl;
+          }
+        } else {
+          // User decided not to proceed, start countdown again
+          this.countdownTime = 10;
+          this.startCountdown();
+        }
+      }
+    }
+
+    // Initialize the threat alert page
+    document.addEventListener('DOMContentLoaded', () => {
+      new ThreatAlertPage();
+    });
+
+    // Add CSS animation for the confirmation message
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>

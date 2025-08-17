@@ -1,0 +1,101 @@
+[
+  {
+      "id": 1,
+      "priority": 1,
+      "action": { "type": "block" },
+      "condition": {
+          "urlFilter": "*://*.google-analytics.com/*",
+          "resourceTypes": ["script", "xmlhttprequest"]
+      }
+  },
+  {
+      "id": 2,
+      "priority": 1,
+      "action": { "type": "block" },
+      "condition": {
+          "urlFilter": "*://*.hotjar.com/*",
+          "resourceTypes": ["script", "xmlhttprequest"]
+      }
+  },
+  {
+      "id": 3,
+      "priority": 1,
+      "action": { "type": "block" },
+      "condition": {
+          "urlFilter": "*://*.sentry.io/*",
+          "resourceTypes": ["script", "xmlhttprequest"]
+      }
+  },
+  {
+      "id": 4,
+      "priority": 1,
+      "action": { "type": "block" },
+      "condition": {
+          "urlFilter": "*://*.bugsnag.com/*",
+          "resourceTypes": ["script", "xmlhttprequest"]
+      }
+  },
+  {
+      "id": 5,
+      "priority": 1,
+      "action": { "type": "block" },
+      "condition": {
+          "urlFilter": "*://*.doubleclick.net/*",
+          "resourceTypes": ["script", "image", "xmlhttprequest", "sub_frame"]
+      }
+  },
+  {
+      "id": 6,
+      "priority": 1,
+      "action": { "type": "block" },
+      "condition": {
+          "urlFilter": "*://*.googlesyndication.com/*",
+          "resourceTypes": ["script", "image", "xmlhttprequest", "sub_frame"]
+      }
+  },
+  {
+      "id": 7,
+      "priority": 1,
+      "action": { "type": "block" },
+      "condition": {
+          "urlFilter": "*.swf",
+          "resourceTypes": ["object", "sub_frame"]
+      }
+  },
+  {
+      "id": 8,
+      "priority": 1,
+      "action": { "type": "block" },
+      "condition": {
+          "urlFilter": "*.gif",
+          "resourceTypes": ["image"]
+      }
+  },
+  {
+      "id": 9,
+      "priority": 1,
+      "action": { "type": "block" },
+      "condition": {
+          "urlFilter": "*.jpg|*.jpeg|*.png",
+          "resourceTypes": ["image"]
+      }
+  },
+  {
+      "id": 10,
+      "priority": 1,
+      "action": { "type": "block" },
+      "condition": {
+          "urlFilter": "*://*.mc.yandex.ru/*",
+          "resourceTypes": ["script", "xmlhttprequest"]
+      }
+  },
+  {
+      "id": 11,
+      "priority": 1,
+      "action": { "type": "allow" },
+      "condition": {
+          "urlFilter": "*://*.example.com/*",
+          "resourceTypes": ["script", "image", "xmlhttprequest", "sub_frame"]
+      }
+  }
+]

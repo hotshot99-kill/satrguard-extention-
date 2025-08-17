@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Analyzer Pro</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <header class="popup-header">
+      <div class="header-content">
+        <div class="app-logo">🛡️</div>
+        <div class="header-info">
+          <h1 class="app-title">Privacy Analyzer</h1>
+          <div class="current-site" id="currentSite">Loading...</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="popup-main">
+      <!-- Privacy Score Section -->
+      <section class="score-section">
+        <div class="score-display">
+          <div class="score-circle">
+            <svg class="score-svg" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="45" class="score-bg"></circle>
+              <circle cx="50" cy="50" r="45" class="score-fill" id="scoreCircle"></circle>
+            </svg>
+            <div class="score-text" id="scoreText">--</div>
+          </div>
+          <div class="score-status" id="scoreStatus">Analyzing...</div>
+        </div>
+        
+        <div class="score-breakdown">
+          <div class="breakdown-item">
+            <span class="breakdown-label">Trackers</span>
+            <span class="breakdown-value" id="trackerCount">0</span>
+          </div>
+          <div class="breakdown-item">
+            <span class="breakdown-label">Cookies</span>
+            <span class="breakdown-value" id="cookieCount">0</span>
+          </div>
+          <div class="breakdown-item">
+            <span class="breakdown-label">Security</span>
+            <span class="breakdown-value" id="securityLevel">--</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Detailed Analysis Tabs -->
+      <section class="analysis-tabs">
+        <div class="tab-buttons">
+          <button class="tab-btn active" data-tab="overview">Overview</button>
+          <button class="tab-btn" data-tab="trackers">Trackers</button>
+          <button class="tab-btn" data-tab="cookies">Cookies</button>
+          <button class="tab-btn" data-tab="security">Security</button>
+        </div>
+
+        <div class="tab-content">
+          <!-- Overview Tab -->
+          <div id="overview" class="tab-panel active">
+            <div class="recommendations">
+              <h3>Recommendations</h3>
+              <div id="recommendationsList" class="recommendations-list">
+                <!-- Recommendations will be populated by JavaScript -->
+              </div>
+            </div>
+            
+            <div class="quick-actions">
+              <h3>Quick Actions</h3>
+              <div class="action-grid">
+                <button class="action-button" id="blockAllTrackers">
+                  <span class="action-icon">🚫</span>
+                  <span class="action-text">Block All Trackers</span>
+                </button>
+                <button class="action-button" id="clearCookies">
+                  <span class="action-icon">🍪</span>
+                  <span class="action-text">Clear Cookies</span>
+                </button>
+                <button class="action-button" id="enableHttps">
+                  <span class="action-icon">🔒</span>
+                  <span class="action-text">Force HTTPS</span>
+                </button>
+                <button class="action-button" id="reportSite">
+                  <span class="action-icon">⚠️</span>
+                  <span class="action-text">Report Site</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trackers Tab -->
+          <div id="trackers" class="tab-panel">
+            <div class="panel-header">
+              <h3>Detected Trackers</h3>
+              <span class="panel-count" id="trackerPanelCount">0</span>
+            </div>
+            <div id="trackersList" class="items-list">
+              <!-- Trackers will be populated by JavaScript -->
+            </div>
+          </div>
+
+          <!-- Cookies Tab -->
+          <div id="cookies" class="tab-panel">
+            <div class="panel-header">
+              <h3>Cookies Found</h3>
+              <span class="panel-count" id="cookiePanelCount">0</span>
+            </div>
+            <div class="cookie-controls">
+              <label class="toggle-switch">
+                <input type="checkbox" id="blockThirdPartyCookies">
+                <span class="slider"></span>
+                Block Third-Party Cookies
+              </label>
+            </div>
+            <div id="cookiesList" class="items-list">
+              <!-- Cookies will be populated by JavaScript -->
+            </div>
+          </div>
+
+          <!-- Security Tab -->
+          <div id="security" class="tab-panel">
+            <div class="panel-header">
+              <h3>Security Analysis</h3>
+            </div>
+            <div class="security-checks">
+              <div class="security-check" id="httpsCheck">
+                <span class="check-icon">⏳</span>
+                <span class="check-text">HTTPS Connection</span>
+                <span class="check-status">Checking...</span>
+              </div>
+              <div class="security-check" id="cspCheck">
+                <span class="check-icon">⏳</span>
+                <span class="check-text">Content Security Policy</span>
+                <span class="check-status">Checking...</span>
+              </div>
+              <div class="security-check" id="hstsCheck">
+                <span class="check-icon">⏳</span>
+                <span class="check-text">HSTS Header</span>
+                <span class="check-status">Checking...</span>
+              </div>
+              <div class="security-check" id="fingerprintingCheck">
+                <span class="check-icon">⏳</span>
+                <span class="check-text">Fingerprinting Protection</span>
+                <span class="check-status">Checking...</span>
+              </div>
+            </div>
+            
+            <div class="security-details" id="securityDetails">
+              <!-- Security details will be populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Privacy History -->
+      <section class="history-section">
+        <div class="section-header">
+          <h3>Privacy History</h3>
+          <button class="clear-history-btn" id="clearHistoryBtn">Clear</button>
+        </div>
+        <div id="historyList" class="history-list">
+          <!-- History will be populated by JavaScript -->
+        </div>
+      </section>
+
+      <!-- Feedback Section -->
+      <section class="feedback-section">
+        <div class="feedback-question">
+          Was this privacy analysis accurate?
+        </div>
+        <div class="feedback-buttons">
+          <button class="feedback-btn positive" id="feedbackPositive">
+            <span class="feedback-icon">👍</span>
+            <span>Accurate</span>
+          </button>
+          <button class="feedback-btn negative" id="feedbackNegative">
+            <span class="feedback-icon">👎</span>
+            <span>Inaccurate</span>
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="popup-footer">
+      <div class="footer-links">
+        <a href="#" id="settingsLink">Settings</a>
+        <a href="#" id="helpLink">Help</a>
+        <a href="#" id="aboutLink">About</a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

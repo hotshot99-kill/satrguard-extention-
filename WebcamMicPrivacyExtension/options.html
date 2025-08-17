@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Guard - Settings</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="options">
+    <div class="options-container">
+        <div class="options-header">
+            <h1>Privacy Guard Settings</h1>
+            <p>Configure your webcam and microphone protection preferences</p>
+        </div>
+
+        <!-- Basic Protection Settings -->
+        <div class="options-section">
+            <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" stroke-width="2" fill="none"/>
+                </svg>
+                Basic Protection
+            </h2>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Block Webcam Access</h3>
+                    <p>Prevent websites from accessing your webcam by default</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="webcamBlocked">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Block Microphone Access</h3>
+                    <p>Prevent websites from accessing your microphone by default</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="micBlocked">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Advanced Features -->
+        <div class="options-section">
+            <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                Advanced Features
+            </h2>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Auto-block Background Tabs</h3>
+                    <p>Automatically block media access for tabs that are not currently active</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="autoBlockBackground">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Fake Media Simulation</h3>
+                    <p>Provide fake video/audio streams instead of blocking (useful for testing)</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="fakeMediaEnabled">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Detect Suspicious Activity</h3>
+                    <p>Monitor and alert about potential tracking or fingerprinting attempts</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="detectSuspicious">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="options-section">
+            <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" stroke="currentColor" stroke-width="2" fill="none"/>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                Notifications
+            </h2>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Show Access Notifications</h3>
+                    <p>Display notifications when websites attempt to access your devices</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="showNotifications">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Notification Sound</h3>
+                    <p>Play sound alerts for blocked access attempts</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="notificationSound">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>High Priority Alerts</h3>
+                    <p>Show urgent notifications for suspicious activity</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="highPriorityAlerts">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Privacy & Logging -->
+        <div class="options-section">
+            <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2"/>
+                    <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                Privacy & Logging
+            </h2>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Log Activity</h3>
+                    <p>Keep a log of all access attempts for review</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="logActivity">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Log Retention Period</h3>
+                    <p>How long to keep activity logs</p>
+                </div>
+                <select id="logRetention" class="setting-select">
+                    <option value="1">1 day</option>
+                    <option value="7">1 week</option>
+                    <option value="30">1 month</option>
+                    <option value="90">3 months</option>
+                    <option value="365">1 year</option>
+                </select>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Include Technical Details</h3>
+                    <p>Log technical information like user agents and constraints</p>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="logTechnicalDetails">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Site Management -->
+        <div class="options-section">
+            <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="12" cy="12" r="6" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="12" cy="12" r="2" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                Site Management
+            </h2>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Trusted Sites</h3>
+                    <p>Manage sites that are always allowed access</p>
+                </div>
+                <button class="btn-secondary" id="manageTrustedSites">Manage</button>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Blocked Sites</h3>
+                    <p>Manage sites that are permanently blocked</p>
+                </div>
+                <button class="btn-secondary" id="manageBlockedSites">Manage</button>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Reset All Site Permissions</h3>
+                    <p>Clear all site-specific permissions and temporary access</p>
+                </div>
+                <button class="btn-secondary" id="resetPermissions">Reset</button>
+            </div>
+        </div>
+
+        <!-- Data Management -->
+        <div class="options-section">
+            <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2"/>
+                    <path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="2"/>
+                    <path d="M12 15V3" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                Data Management
+            </h2>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Export Activity Log</h3>
+                    <p>Download your activity history as a CSV file</p>
+                </div>
+                <button class="btn-secondary" id="exportLogs">Export</button>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Clear Activity Log</h3>
+                    <p>Delete all logged activity data</p>
+                </div>
+                <button class="btn-secondary" id="clearLogs">Clear</button>
+            </div>
+            
+            <div class="setting-item">
+                <div class="setting-info">
+                    <h3>Reset Extension</h3>
+                    <p>Reset all settings to default values</p>
+                </div>
+                <button class="btn-secondary" id="resetExtension">Reset</button>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="options-section">
+            <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M3 3v18h18" stroke="currentColor" stroke-width="2"/>
+                    <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                Statistics
+            </h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalBlocked">0</div>
+                    <div class="stat-label">Total Blocked</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalAllowed">0</div>
+                    <div class="stat-label">Total Allowed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="sitesProtected">0</div>
+                    <div class="stat-label">Sites Protected</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="fakeStreams">0</div>
+                    <div class="stat-label">Fake Streams</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="options-footer">
+            <button class="btn-primary" id="saveSettings">Save Settings</button>
+            <button class="btn-secondary" id="viewLogs">View Activity Logs</button>
+        </div>
+    </div>
+
+    <!-- Site Management Modal -->
+    <div class="modal" id="siteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="siteModalTitle">Manage Sites</h3>
+                <button class="modal-close" id="closeSiteModal">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="site-input">
+                    <input type="text" id="siteInput" placeholder="Enter website (e.g., example.com)">
+                    <button class="btn-primary" id="addSite">Add</button>
+                </div>
+                <div class="site-list" id="siteList">
+                    <!-- Sites will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="options.js"></script>
+</body>
+</html>

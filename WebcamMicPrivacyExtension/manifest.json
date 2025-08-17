@@ -1,0 +1,59 @@
+{
+  "manifest_version": 3,
+  "name": "Privacy Guard - Webcam & Mic Blocker",
+  "version": "1.0.0",
+  "description": "Advanced privacy protection for your webcam and microphone with detailed logging and fake media simulation",
+  
+  "permissions": [
+    "storage",
+    "activeTab",
+    "notifications",
+    "alarms",
+    "tabs"
+  ],
+  
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Privacy Guard",
+    "default_icon": {
+      "16": "icons/ext-icon.png",
+      "32": "icons/ext-icon.png",
+      "48": "icons/ext-icon.png",
+      "128": "icons/ext-icon.png"
+    }
+  },
+  
+  "icons": {
+    "16": "icons/ext-icon.png",
+    "32": "icons/ext-icon.png",
+    "48": "icons/ext-icon.png",
+    "128": "icons/ext-icon.png"
+  },
+  
+  "options_page": "options.html",
+  
+  "web_accessible_resources": [
+    {
+      "resources": ["inject.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

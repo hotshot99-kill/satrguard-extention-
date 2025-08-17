@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self';" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Identity Theft Protection — Logs</title>
+  <link rel="stylesheet" href="logs.css" />
+</head>
+<body>
+  <header class="hdr">
+    <div class="hdr-left">
+      <h1>Identity Theft Protection — Logs</h1>
+      <span id="ver" class="muted"></span>
+    </div>
+    <div class="hdr-right">
+      <button id="btnExportJSON" class="btn ghost">Export JSON</button>
+      <button id="btnExportCSV" class="btn ghost">Export CSV</button>
+      <button id="btnClear" class="btn danger">Clear Logs</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <!-- Filters -->
+    <section class="card">
+      <div class="filters">
+        <div class="frow">
+          <input id="q" type="text" placeholder="Search host / action / types…" />
+          <select id="level">
+            <option value="">All levels</option>
+            <option value="high">High</option>
+            <option value="mod">Moderate</option>
+            <option value="low">Low</option>
+          </select>
+          <input id="dateFrom" type="date" />
+          <input id="dateTo" type="date" />
+          <input id="riskMin" type="number" min="0" max="100" placeholder="Min risk" />
+          <input id="riskMax" type="number" min="0" max="100" placeholder="Max risk" />
+          <button id="btnReset" class="btn ghost">Reset</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Charts -->
+    <section class="grid-2">
+      <div class="card">
+        <div class="card-title">Levels Over Time</div>
+        <canvas id="chartLevels" width="800" height="280"></canvas>
+      </div>
+      <div class="card">
+        <div class="card-title">Top Hosts</div>
+        <canvas id="chartHosts" width="800" height="280"></canvas>
+      </div>
+    </section>
+
+    <!-- Table -->
+    <section class="card">
+      <div class="table-head">
+        <div class="summary">
+          <span id="count"></span>
+        </div>
+        <div class="pager">
+          <button id="prev" class="btn ghost">Prev</button>
+          <span id="pageInfo" class="muted"></span>
+          <button id="next" class="btn ghost">Next</button>
+          <select id="pageSize">
+            <option>25</option>
+            <option>50</option>
+            <option selected>100</option>
+            <option>200</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Level</th>
+              <th>Host</th>
+              <th>Types</th>
+              <th>Risk</th>
+              <th>Action</th>
+              <th>Sample</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="ftr">
+    <button id="btnRefresh" class="btn ghost">Refresh</button>
+    <span class="muted">Live updates enabled • Stored locally</span>
+  </footer>
+
+  <script src="logs.js"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+{
+  "manifest_version": 3,
+  "name": "Ultimate Ad Blocker",
+  "version": "2.0",
+  "description": "Blocks all ads, including pop-ups, video ads, banners, and tracking scripts.",
+  "permissions": ["declarativeNetRequest", "storage", "scripting", "webNavigation"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "assets/ext-icon.png"
+  },
+  "icons": {
+    "16":  "assets/ext-icon.png",
+    "48":  "assets/ext-icon.png",
+    "128":  "assets/ext-icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_start"
+    }
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "1",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ],
+    "rules": [
+      {
+        "id": 1,
+        "priority": 1,
+        "action": { "type": "block" },
+        "condition": {
+          "urlFilter": "google-analytics.com",
+          "resourceTypes": ["script"]
+        }
+      },
+      {
+        "id": 2,
+        "priority": 1,
+        "action": { "type": "block" },
+        "condition": {
+          "urlFilter": "mc.yandex.ru",
+          "resourceTypes": ["script"]
+        }
+      },
+      {
+        "id": 3,
+        "priority": 1,
+        "action": { "type": "block" },
+        "condition": {
+          "urlFilter": "*.swf",
+          "resourceTypes": ["object"]
+        }
+      },
+      {
+        "id": 4,
+        "priority": 1,
+        "action": { "type": "block" },
+        "condition": {
+          "urlFilter": "*.gif",
+          "resourceTypes": ["image"]
+        }
+      },
+      {
+        "id": 5,
+        "priority": 1,
+        "action": { "type": "block" },
+        "condition": {
+          "urlFilter": "*.jpg|*.jpeg|*.png",
+          "resourceTypes": ["image"]
+        }
+      },
+      {
+        "id": 6,
+        "priority": 1,
+        "action": { "type": "block" },
+        "condition": {
+          "urlFilter": "bugsnag.com",
+          "resourceTypes": ["script"]
+        }
+      },
+      {
+        "id": 7,
+        "priority": 1,
+        "action": { "type": "allow" },
+        "condition": {
+          "urlFilter": "*://*.example.com/*",
+          "resourceTypes": ["script", "image", "xmlhttprequest", "sub_frame"]
+        }
+      }
+    ]
+  }
+}

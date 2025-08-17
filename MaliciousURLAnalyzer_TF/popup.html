@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SecureGuard - Protection Dashboard</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <div class="header">
+      <div class="logo">
+        <span class="shield-icon">🛡️</span>
+        <h1>SecureGuard</h1>
+      </div>
+      <div class="status-indicator" id="statusIndicator">
+        <span class="status-dot active"></span>
+        <span class="status-text">Protected</span>
+      </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number" id="threatsBlocked">0</div>
+        <div class="stat-label">Threats Blocked</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="sitesScanned">0</div>
+        <div class="stat-label">Sites Scanned</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="filesChecked">0</div>
+        <div class="stat-label">Files Checked</div>
+      </div>
+    </div>
+
+    <!-- Current Page Status -->
+    <div class="current-page">
+      <h3>Current Page</h3>
+      <div class="page-info">
+        <div class="page-url" id="currentUrl">Loading...</div>
+        <div class="page-status" id="pageStatus">
+          <span class="status-icon">🔍</span>
+          <span class="status-text">Scanning...</span>
+        </div>
+      </div>
+      <button class="scan-btn" id="scanPageBtn">
+        <span class="scan-icon">🔍</span>
+        Scan This Page
+      </button>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="recent-activity">
+      <h3>Recent Activity</h3>
+      <div class="activity-list" id="activityList">
+        <div class="activity-item">
+          <div class="activity-icon">⏳</div>
+          <div class="activity-text">Loading recent scans...</div>
+          <div class="activity-time">Now</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Protection Settings -->
+    <div class="settings-section">
+      <h3>Protection Settings</h3>
+      <div class="setting-item">
+        <div class="setting-info">
+          <div class="setting-title">Real-time Scanning</div>
+          <div class="setting-desc">Automatically scan all URLs</div>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="realtimeScanning" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      
+      <div class="setting-item">
+        <div class="setting-info">
+          <div class="setting-title">Download Protection</div>
+          <div class="setting-desc">Scan files before download</div>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="downloadProtection" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      
+      <div class="setting-item">
+        <div class="setting-info">
+          <div class="setting-title">Script Analysis</div>
+          <div class="setting-desc">Monitor page scripts for threats</div>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="scriptAnalysis" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <button class="action-btn" id="viewHistoryBtn">
+        <span class="btn-icon">📊</span>
+        View History
+      </button>
+      <button class="action-btn" id="reportIssueBtn">
+        <span class="btn-icon">🐛</span>
+        Report Issue
+      </button>
+      <button class="action-btn" id="settingsBtn">
+        <span class="btn-icon">⚙️</span>
+        Settings
+      </button>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="version">v1.0.0</div>
+      <div class="powered-by">Powered by Google Safe Browsing & VirusTotal</div>
+    </div>
+  </div>
+
+  <!-- History Modal -->
+  <div class="modal" id="historyModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Scan History</h3>
+        <button class="modal-close" id="closeHistoryModal">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="history-filters">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="threats">Threats</button>
+          <button class="filter-btn" data-filter="safe">Safe</button>
+        </div>
+        <div class="history-list" id="historyList">
+          <!-- History items will be populated here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Report Modal -->
+  <div class="modal" id="reportModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Report an Issue</h3>
+        <button class="modal-close" id="closeReportModal">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="reportForm">
+          <div class="form-group">
+            <label for="issueType">Issue Type</label>
+            <select id="issueType" required>
+              <option value="">Select an issue</option>
+              <option value="false_positive">False Positive</option>
+              <option value="false_negative">Missed Threat</option>
+              <option value="bug">Bug Report</option>
+              <option value="feature">Feature Request</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="issueUrl">URL (if applicable)</label>
+            <input type="url" id="issueUrl" placeholder="https://example.com">
+          </div>
+          <div class="form-group">
+            <label for="issueDescription">Description</label>
+            <textarea id="issueDescription" rows="4" placeholder="Describe the issue..." required></textarea>
+          </div>
+          <div class="form-actions">
+            <button type="button" id="cancelReport">Cancel</button>
+            <button type="submit">Submit Report</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

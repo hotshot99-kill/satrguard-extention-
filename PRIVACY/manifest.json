@@ -1,0 +1,57 @@
+{
+  "manifest_version": 3,
+  "name": "Privacy Analyzer Pro",
+  "version": "1.0.0",
+  "description": "Advanced privacy analyzer with real-time scoring and tracking protection",
+  
+  "permissions": [
+    "activeTab",
+    "storage",
+    "webRequest",
+    "webNavigation",
+    "scripting",
+    "notifications"
+  ],
+  
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  
+  "background": {
+    "service_worker": "background.js"
+  },
+  
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_start"
+    }
+  ],
+  
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Privacy Analyzer",
+    "default_icon": {
+      "16": "assets/ext-icon.png",
+      "32": "assets/ext-icon.png",
+      "48": "assets/ext-icon.png",
+      "128": "assets/ext-icon.png"
+    }
+  },
+  
+  "icons": {
+    "16": "assets/ext-icon.png",
+    "32": "assets/ext-icon.png",
+    "48": "assets/ext-icon.png",
+    "128": "assets/ext-icon.png"
+  },
+  
+  "web_accessible_resources": [
+    {
+      "resources": ["content.css", "privacy-widget.html"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeBrowse Extension</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 400px;
+            min-height: 500px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 16px;
+            text-align: center;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .header h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 4px;
+        }
+
+        .header p {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .status-bar {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+
+        .status-dot.disabled {
+            background: #ef4444;
+        }
+
+        .toggle-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .toggle-btn:hover {
+            background: #2563eb;
+        }
+
+        .toggle-btn.disabled {
+            background: #ef4444;
+        }
+
+        .toggle-btn.disabled:hover {
+            background: #dc2626;
+        }
+
+        .content {
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.95);
+            margin: 0;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-item {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            padding: 8px 12px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            transition: all 0.2s;
+        }
+
+        .category-item:hover {
+            background: #f3f4f6;
+        }
+
+        .category-info {
+            flex: 1;
+        }
+
+        .category-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .category-count {
+            font-size: 11px;
+            color: #6b7280;
+        }
+
+        .switch {
+            position: relative;
+            width: 40px;
+            height: 20px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: .3s;
+            border-radius: 20px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #3b82f6;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stat-number {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e40af;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: #f9fafb;
+            border-color: #9ca3af;
+        }
+
+        .action-btn.primary {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .action-btn.primary:hover {
+            background: #2563eb;
+        }
+
+        .recent-blocks {
+            max-height: 120px;
+            overflow-y: auto;
+        }
+
+        .block-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 8px;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 4px;
+            margin-bottom: 4px;
+        }
+
+        .block-site {
+            font-size: 11px;
+            font-weight: 500;
+            color: #991b1b;
+        }
+
+        .block-time {
+            font-size: 10px;
+            color: #6b7280;
+        }
+
+        .footer {
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.9);
+            border-top: 1px solid #e5e7eb;
+            text-align: center;
+        }
+
+        .footer-btn {
+            background: none;
+            border: none;
+            color: #6b7280;
+            font-size: 11px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .footer-btn:hover {
+            color: #374151;
+        }
+
+        .notification {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 8px 12px;
+            background: #10b981;
+            color: white;
+            border-radius: 6px;
+            font-size: 12px;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .profile-selector {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+        }
+
+        .profile-btn {
+            flex: 1;
+            padding: 6px 8px;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .profile-btn.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        .time-restriction {
+            background: #fffbeb;
+            border: 1px solid #fbbf24;
+            border-radius: 6px;
+            padding: 8px;
+            margin-bottom: 12px;
+        }
+
+        .time-restriction-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 4px;
+        }
+
+        .time-restriction-info {
+            font-size: 11px;
+            color: #a16207;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>🛡️ SafeBrowse</h1>
+        <p>Website Blocking & Parental Controls</p>
+    </div>
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+        <div class="status-indicator">
+            <div class="status-dot" id="status-dot"></div>
+            <span id="status-text">Protection Active</span>
+        </div>
+        <button class="toggle-btn" id="main-toggle" onclick="toggleProtection()">Disable</button>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+        <!-- Profile Selector -->
+        <div class="profile-selector">
+            <button class="profile-btn active" onclick="selectProfile('custom')">Custom</button>
+            <button class="profile-btn" onclick="selectProfile('work')">Work</button>
+            <button class="profile-btn" onclick="selectProfile('child')">Child</button>
+        </div>
+
+        <!-- Active Time Restriction -->
+        <div class="time-restriction" id="time-restriction" style="display: none;">
+            <div class="time-restriction-title">⏰ Work Mode Active</div>
+            <div class="time-restriction-info">Social media blocked until 5:00 PM</div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="section">
+            <div class="section-title">
+                📊 Today's Stats
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="blocks-today">23</div>
+                    <div class="stat-label">Sites Blocked</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="categories-active">5</div>
+                    <div class="stat-label">Categories Active</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Category Controls -->
+        <div class="section">
+            <div class="section-title">
+                🚫 Block Categories
+            </div>
+            
+            <div class="category-item">
+                <div class="category-info">
+                    <div class="category-name">Adult Content</div>
+                    <div class="category-count">12 sites blocked today</div>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="adult-content" onchange="toggleCategory('adult-content')" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="category-item">
+                <div class="category-info">
+                    <div class="category-name">Social Media</div>
+                    <div class="category-count">8 sites blocked today</div>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="social-media" onchange="toggleCategory('social-media')" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="category-item">
+                <div class="category-info">
+                    <div class="category-name">Gambling</div>
+                    <div class="category-count">3 sites blocked today</div>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="gambling" onchange="toggleCategory('gambling')">
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="category-item">
+                <div class="category-info">
+                    <div class="category-name">Dating Sites</div>
+                    <div class="category-count">0 sites blocked today</div>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="dating" onchange="toggleCategory('dating')">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Recent Blocks -->
+        <div class="section">
+            <div class="section-title">
+                🕒 Recent Blocks
+            </div>
+            <div class="recent-blocks">
+                <div class="block-item">
+                    <div class="block-site">facebook.com</div>
+                    <div class="block-time">2 min ago</div>
+                </div>
+                <div class="block-item">
+                    <div class="block-site">adult-site.com</div>
+                    <div class="block-time">15 min ago</div>
+                </div>
+                <div class="block-item">
+                    <div class="block-site">casino-online.com</div>
+                    <div class="block-time">1 hour ago</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="section">
+            <div class="section-title">
+                ⚡ Quick Actions
+            </div>
+            <div class="quick-actions">
+                <button class="action-btn" onclick="openOptions()">Settings</button>
+                <button class="action-btn" onclick="viewReports()">Reports</button>
+                <button class="action-btn primary" onclick="addCustomSite()">Block Site</button>
+                <button class="action-btn" onclick="pauseFor30Min()">Pause 30min</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <button class="footer-btn" onclick="openFullPanel()">Open Full Control Panel</button>
+    </div>
+
+    <script>
+        // Extension state management
+        let isProtectionActive = true;
+        let activeProfile = 'custom';
+        let blockedCategories = new Set(['adult-content', 'social-media']);
+        let todayStats = {
+            blocksToday: 23,
+            categoriesActive: 5
+        };
+
+        // Initialize extension
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSettings();
+            updateUI();
+            checkTimeRestrictions();
+            
+            // Listen for messages from background script
+            if (typeof chrome !== 'undefined' && chrome.runtime) {
+                chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+                    if (message.type === 'SITE_BLOCKED') {
+                        updateBlockStats(message.site, message.category);
+                    } else if (message.type === 'SETTINGS_UPDATED') {
+                        loadSettings();
+                        updateUI();
+                    }
+                });
+            }
+        });
+
+        // Main protection toggle
+        function toggleProtection() {
+            isProtectionActive = !isProtectionActive;
+            updateUI();
+            saveSettings();
+            
+            // Send message to background script
+            if (typeof chrome !== 'undefined' && chrome.runtime) {
+                chrome.runtime.sendMessage({
+                    type: 'TOGGLE_PROTECTION',
+                    enabled: isProtectionActive
+                });
+            }
+            
+            showNotification(isProtectionActive ? 'Protection enabled' : 'Protection disabled');
+        }
+
+        // Category management
+        function toggleCategory(category) {
+            const checkbox = document.getElementById(category);
+            if (checkbox.checked) {
+                blockedCategories.add(category);
+            } else {
+                blockedCategories.delete(category);
+            }
+            
+            updateUI();
+            saveSettings();
+            
+            // Send message to background script
+            if (typeof chrome !== 'undefined' && chrome.runtime) {
+                chrome.runtime.sendMessage({
+                    type: 'UPDATE_CATEGORIES',
+                    categories: Array.from(blockedCategories)
+                });
+            }
+            
+            showNotification(`${category.replace('-', ' ')} ${checkbox.checked ? 'enabled' : 'disabled'}`);
+        }
+
+        // Profile management
+        function selectProfile(profile) {
+            // Update UI
+            document.querySelectorAll('.profile-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            activeProfile = profile;
+            
+            // Apply profile settings
+            applyProfileSettings(profile);
+            updateUI();
+            saveSettings();
+            
+            showNotification(`${profile} profile activated`);
+        }
+
+        function applyProfileSettings(profile) {
+            // Clear current categories
+            blockedCategories.clear();
+            
+            // Apply profile-specific categories
+            if (profile === 'child') {
+                blockedCategories.add('adult-content');
+                blockedCategories.add('gambling');
+                blockedCategories.add('social-media');
+                blockedCategories.add('dating');
+            } else if (profile === 'work') {
+                blockedCategories.add('social-media');
+                blockedCategories.add('dating');
+                blockedCategories.add('gambling');
+            } else if (profile === 'custom') {
+                // Keep current settings
+                blockedCategories.add('adult-content');
+                blockedCategories.add('social-media');
+            }
+            
+            // Update checkboxes
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                if (cb.id !== 'main-toggle') {
+                    cb.checked = blockedCategories.has(cb.id);
+                }
+            });
+        }
+
+        // Quick actions
+        function addCustomSite() {
+            const site = prompt('Enter website to block (e.g., example.com):');
+            if (site && site.trim()) {
+                // Send to background script
+                if (typeof chrome !== 'undefined' && chrome.runtime) {
+                    chrome.runtime.sendMessage({
+                        type: 'ADD_CUSTOM_SITE',
+                        site: site.trim()
+                    });
+                }
+                showNotification(`${site} added to block list`);
+            }
+        }
+
+        function pauseFor30Min() {
+            if (typeof chrome !== 'undefined' && chrome.runtime) {
+                chrome.runtime.sendMessage({
+                    type: 'PAUSE_PROTECTION',
+                    duration: 30 * 60 * 1000 // 30 minutes in milliseconds
+                });
+            }
+            showNotification('Protection paused for 30 minutes');
+        }
+
+        function openOptions() {
+            if (typeof chrome !== 'undefined' && chrome.runtime) {
+                chrome.runtime.openOptionsPage();
+            }
+        }
+
+        function viewReports() {
+            // Open reports page
+            if (typeof chrome !== 'undefined' && chrome.tabs) {
+                chrome.tabs.create({
+                    url: chrome.runtime.getURL('reports.html')
+                });
+            }
+        }
+
+        function openFullPanel() {
+            // Open full control panel
+            if (typeof chrome !== 'undefined' && chrome.tabs) {
+                chrome.tabs.create({
+                    url: chrome.runtime.getURL('options.html')
+                });
+            }
+        }
+
+        // Time restrictions
+        function checkTimeRestrictions() {
+            const now = new Date();
+            const hour = now.getHours();
+            const isWeekday = now.getDay() >= 1 && now.getDay() <= 5;
+            
+            // Check if work hours (9 AM - 5 PM on weekdays)
+            if (isWeekday && hour >= 9 && hour < 17) {
+                document.getElementById('time-restriction').style.display = 'block';
+            } else {
+                document.getElementById('time-restriction').style.display = 'none';
+            }
+        }
+
+        // UI updates
+        function updateUI() {
+            // Update main toggle
+            const statusDot = document.getElementById('status-dot');
+            const statusText = document.getElementById('status-text');
+            const mainToggle = document.getElementById('main-toggle');
+            
+            if (isProtectionActive) {
+                statusDot.classList.remove('disabled');
+                statusText.textContent = 'Protection Active';
+                mainToggle.textContent = 'Disable';
+                mainToggle.classList.remove('disabled');
+            } else {
+                statusDot.classList.add('disabled');
+                statusText.textContent = 'Protection Disabled';
+                mainToggle.textContent = 'Enable';
+                mainToggle.classList.add('disabled');
+            }
+            
+            // Update stats
+            document.getElementById('blocks-today').textContent = todayStats.blocksToday;
+            document.getElementById('categories-active').textContent = blockedCategories.size;
+        }
+
+        function updateBlockStats(site, category) {
+            todayStats.blocksToday++;
+            updateUI();
+            
+            // Add to recent blocks
+            const recentBlocks = document.querySelector('.recent-blocks');
+            const blockItem = document.createElement('div');
+            blockItem.className = 'block-item';
+            blockItem.innerHTML = `
+                <div class="block-site">${site}</div>
+                <div class="block-time">Just now</div>
+            `;
+            recentBlocks.insertBefore(blockItem, recentBlocks.firstChild);
+            
+            // Keep only last 5 items
+            while (recentBlocks.children.length > 5) {
+                recentBlocks.removeChild(recentBlocks.lastChild);
+            }
+        }
+
+        // Settings management
+        function saveSettings() {
+            const settings = {
+                isProtectionActive,
+                activeProfile,
+                blockedCategories: Array.from(blockedCategories),
+                todayStats
+            };
+            
+            if (typeof chrome !== 'undefined' && chrome.storage) {
+                chrome.storage.local.set({ safeBrowseSettings: settings });
+            } else {
+                localStorage.setItem('safeBrowseSettings', JSON.stringify(settings));
+            }
+        }
+
+        function loadSettings() {
+            if (typeof chrome !== 'undefined' && chrome.storage) {
+                chrome.storage.local.get(['safeBrowseSettings'], (result) => {
+                    if (result.safeBrowseSettings) {
+                        const settings = result.safeBrowseSettings;
+                        isProtectionActive = settings.isProtectionActive !== false;
+                        activeProfile = settings.activeProfile || 'custom';
+                        blockedCategories = new Set(settings.blockedCategories || ['adult-content', 'social-media']);
+                        todayStats = settings.todayStats || { blocksToday: 0, categoriesActive: 0 };
+                        updateUI();
+                    }
+                });
+            } else {
+                const saved = localStorage.getItem('safeBrowseSettings');
+                if (saved) {
+                    const settings = JSON.parse(saved);
+                    isProtectionActive = settings.isProtectionActive !== false;
+                    activeProfile = settings.activeProfile || 'custom';
+                    blockedCategories = new Set(settings.blockedCategories || ['adult-content', 'social-media']);
+                    todayStats = settings.todayStats || { blocksToday: 0, categoriesActive: 0 };
+                    updateUI();
+                }
+            }
+        }
+
+        // Utility functions
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 2000);
+        }
+
+        // Auto-refresh time restrictions every minute
+        setInterval(checkTimeRestrictions, 60000);
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96d2a4dc952845b6',t:'MTc1NDg2MTk0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

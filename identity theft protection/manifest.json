@@ -1,0 +1,46 @@
+{
+  "manifest_version": 3,
+  "name": "Identity Theft Protection",
+  "version": "1.0",
+  "description": "Detects and prevents potential identity theft attempts by monitoring form inputs, suspicious scripts, and unsafe network requests.",
+  
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "tabs",
+    "webRequest",
+    "webRequestBlocking"
+  ],
+  
+  "host_permissions": [
+    "<all_urls>"
+  ],
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "asset/ext-icon.png",
+      "48": "asset/ext-icon.png",
+      "128": "asset/ext-icon.png"
+    }
+  },
+
+  "icons": {
+    "16": "asset/ext-icon.png",
+    "48": "asset/ext-icon.png",
+    "128": "asset/ext-icon.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

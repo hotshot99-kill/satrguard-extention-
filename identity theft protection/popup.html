@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self';" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Identity Theft Protection</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header class="hdr">
+    <div class="hdr-left">
+      <img src="asset/ext-icon.png" alt="" class="logo" />
+      <h1>Identity Theft Protection</h1>
+    </div>
+    <span class="version" id="extVersion"></span>
+  </header>
+
+  <main class="wrap">
+    <!-- SETTINGS -->
+    <section class="card">
+      <h2>Protection</h2>
+      <div class="row">
+        <label class="switch">
+          <input type="checkbox" id="enableProtection" />
+          <span>Enable protection</span>
+        </label>
+      </div>
+      <div class="row">
+        <label class="switch">
+          <input type="checkbox" id="blockOnHighRisk" />
+          <span>Block on HIGH risk</span>
+        </label>
+      </div>
+      <div class="row">
+        <label class="switch">
+          <input type="checkbox" id="showInlineTips" />
+          <span>Show inline tips</span>
+        </label>
+      </div>
+      <div class="row">
+        <label class="switch">
+          <input type="checkbox" id="enableBreachChecks" />
+          <span>Enable email breach checks (HIBP)</span>
+        </label>
+      </div>
+    </section>
+
+    <!-- PIN / TRUST -->
+    <section class="card">
+      <h2>PIN & Trust</h2>
+      <div class="row">
+        <label class="switch">
+          <input type="checkbox" id="requirePinForTrust" />
+          <span>Require PIN to trust a domain</span>
+        </label>
+      </div>
+      <div class="row pin-row">
+        <input type="password" id="pinInput" placeholder="Set or change PIN" autocomplete="new-password" />
+        <button id="savePinBtn" class="btn">Save PIN</button>
+        <button id="clearPinBtn" class="btn btn-ghost">Clear PIN</button>
+      </div>
+      <div class="hint">PIN is stored as a SHA-256 hash (not the raw PIN).</div>
+    </section>
+
+    <!-- TRUSTED DOMAINS -->
+    <section class="card">
+      <h2>Trusted Domains</h2>
+      <div class="row trust-row">
+        <input type="text" id="trustDomainInput" placeholder="example.com" />
+        <button id="addTrustBtn" class="btn">Add</button>
+      </div>
+      <ul id="trustedList" class="list"></ul>
+    </section>
+
+    <!-- HIBP API KEY -->
+    <section class="card">
+      <h2>HIBP API</h2>
+      <div class="row">
+        <input type="password" id="hibpKeyInput" placeholder="Have I Been Pwned API Key" autocomplete="off" />
+        <button id="saveHibpKeyBtn" class="btn">Save</button>
+      </div>
+      <div class="hint">Key is stored locally in your browser (chrome.storage.local).</div>
+    </section>
+
+    <!-- LOGS -->
+    <section class="card">
+  <!-- Header Row -->
+  <div class="recent-logs-header">
+    <h2>Recent Logs</h2>
+    <div class="log-controls">
+      <select id="levelFilter">
+        <option value="">All levels</option>
+        <option value="high">High</option>
+        <option value="mod">Moderate</option>
+        <option value="low">Low</option>
+      </select>
+      <div class="log-buttons">
+        <button id="refreshLogsBtn" class="btn btn-ghost">Refresh</button>
+        <button id="clearLogsBtn" class="btn btn-ghost">Clear</button>
+        <button id="exportJsonBtn" class="btn btn-ghost">Export JSON</button>
+        <button id="exportCsvBtn" class="btn btn-ghost">Export CSV</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logs Table -->
+  <div class="table-wrap">
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Level</th>
+          <th>Host</th>
+          <th>Types</th>
+          <th>Risk</th>
+          <th>Action</th>
+          <th>Sample</th>
+        </tr>
+      </thead>
+      <tbody id="logsTbody"></tbody>
+    </table>
+  </div>
+
+  <!-- Entry Count -->
+  <div class="hint" id="logsCount">0 entries</div>
+</section>
+
+  </main>
+
+  <footer class="ftr">
+    <button id="openLogsBtn" class="btn btn-ghost">Open Dashboard</button>
+    <button id="quickDefaultsBtn" class="btn btn-ghost">Recommended Defaults</button>
+    <span>© Identity Theft Protection</span>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>
